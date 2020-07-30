@@ -29,8 +29,23 @@ String Odczyt(String parametrMeteo ) throws IOException
 	case "cisnienie":	
 		{
 			Element temp = doc.getElementById("PARAM_0_PR");
-			String cisnienie = temp.text();
-			odczytMeteo = cisnienie;
+			String cisnienie_str = temp.text(); 
+/* 	odczytane ciśnienie jest bezwględne na wysokości 110 mnpm
+	zamienić przecinek na kropkę potrzebne do obliczeń
+	wyliczyć poprawkę na wysokość położenia Stryjeńskich 124 mnpm
+	odjąć poprawkę od odczytanego ciśnienia bo ciśnienie
+	jest odwrotnie propocjonalne do zmiany wysokości
+*/	
+	cisnienie_str = cisnienie_str.replace(',','.');
+	Double cisnienie_val = Double.parseDouble(cisnienie_str);	
+	cisnienie_val = cisnienie_val - (11.3/100 * 14); // 14 -> 124-110mnpm
+	cisnienie_val = cisnienie_val + (11.3/100 * 124); // 124 -> 124-0mnpm
+	double roundOff = Math.round(cisnienie_val * 10) / 10;
+	cisnienie_str = Double.toString(roundOff);
+	cisnienie_str = cisnienie_str.replace('.',',');
+	
+			
+			odczytMeteo = cisnienie_str;
 		}
 		break;
 		
