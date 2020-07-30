@@ -1,0 +1,106 @@
+alignment top_left
+background yes
+update_interval 3
+  
+cpu_avg_samples 2
+net_avg_samples 2
+  
+override_utf8_locale yes
+  
+double_buffer yes
+no_buffers yes
+  
+text_buffer_size 10240
+imlib_cache_size 0
+
+###########
+# Windows #
+###########
+own_window_class Conky
+own_window yes
+own_window_type normal
+own_window_argb_visual yes
+own_window_argb_value 128
+own_window_transparent no
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+  
+  
+border_inner_margin 0
+border_outer_margin 0
+  
+minimum_size 500 500
+maximum_width 285
+  
+alignment top_left
+gap_x 70
+gap_y 40
+
+############
+# Graphics #
+############
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+      
+########
+# Text #
+########
+use_xft yes
+xftalpha 0.8
+  
+uppercase no
+  
+default_color black
+
+########
+# Code #
+########
+own_window_colour 000000
+TEXT
+
+${alignc}${font Bauhaus:size=30} ${color lightgrey}${time %H}:${color lightgrey}${time %M}${color lightgrey}${font Bauhaus:size=11} ${time %A} ${time %d %B }
+#${color yellow}ciśnienie ${alignr}${execi 180 curl -s www.meteo.waw.pl | grep PARAM_0_PR | cut -c 67-72} Pa
+${alignc}${execi 10000 java -cp /home/pawelw/eclipse-workspace/meteo/bin:/home/pawelw/eclipse-workspace/meteo/lib/jsoup-1.11.2.jar meteo.test tytułstrony} 
+${color yellow}ciśnienie ${alignr}${execi 180 java -cp /home/pawelw/eclipse-workspace/meteo/bin:/home/pawelw/eclipse-workspace/meteo/lib/jsoup-1.11.2.jar meteo.test cisnienie} hPa
+temperatura ${alignr}${execi 180 java -cp /home/pawelw/eclipse-workspace/meteo/bin:/home/pawelw/eclipse-workspace/meteo/lib/jsoup-1.11.2.jar meteo.test temperatura}°C
+odczuwalna ${alignr}${execi 180 java -cp /home/pawelw/eclipse-workspace/meteo/bin:/home/pawelw/eclipse-workspace/meteo/lib/jsoup-1.11.2.jar meteo.test odczuwalna}°C
+wilgotność ${alignr}${execi 180 java -cp /home/pawelw/eclipse-workspace/meteo/bin:/home/pawelw/eclipse-workspace/meteo/lib/jsoup-1.11.2.jar meteo.test wilgotnosc}%
+wiatr ${alignr}${execi 180 java -cp /home/pawelw/eclipse-workspace/meteo/bin:/home/pawelw/eclipse-workspace/meteo/lib/jsoup-1.11.2.jar meteo.test wiatr} m/s
+kierunek wiatru                             ${execi 180 java -cp /home/pawelw/eclipse-workspace/meteo/bin:/home/pawelw/eclipse-workspace/meteo/lib/jsoup-1.11.2.jar meteo.test kierunekwiatru}
+${color lightyellow}Procesor: ${color lightblue}${execi 3600 cat /proc/cpuinfo | grep 'model name' | cut -c 14-18 | uniq}${execi 3600 cat /proc/cpuinfo | grep 'model name' | cut -c 23-38 | uniq}
+${color lightyellow}Arch/Freq: ${color lightblue}${machine}${color green} @ $freq(MHz)${color lightyellow}
+Edition: ${color lightblue}${font Bauhaus:size=11}${alignr 6}${execi 10000 awk -F= '/ID=/{printf $2" "} /RELEASE=/{printf $2" "} /CODENAME=/{print $2}' /etc/lsb-release}${color lightyellow}${font Bauhaus:size=11}
+Kernel: ${color lightblue}${kernel}${color lightyellow}
+Uptime: ${color lightblue}$uptime_short${color lightyellow}
+# Power: ${color lightblue}${battery_percent BAT0}%${color lightyellow}
+CPU temp: ${color green}${hwmon 1 temp 1} °C${color lightyellow}
+CPU: ${color lightblue}${cpu cpu0}%${alignr}${cpubar cpu0 7,200}${color lightyellow}
+RAM: ${color lightblue}$mem${alignr}${membar 7,170}${color lightyellow}
+${voffset}LOCAL IP: ${color lightblue}${addr wlp4s0}${color lightyellow}
+Public IP: ${color lightblue}${execi 60  wget http://ipecho.net/plain -O - -q ; echo }${color lightyellow}
+${color lightyellow}$hr${font Bauhaus:size=11}
+# Signal: ${color lightblue}${wireless_link_qual eno1}% ${color lightyellow}
+${color lightyellow}${color0}${alignr}${upspeedgraph wlp4s0 18,120 0077FF 0077ff}
+Upload: ${color lightblue}${upspeed wlp4s0}${color lightyellow}
+Total Sent: ${color lightblue}${totalup wlp4s0}${color lightyellow}
+
+
+${color lightyellow}${color0}${alignr}${downspeedgraph wlp4s0 18,120 0077ff 0077ff}
+Download: ${color lightblue}${downspeed wlp4s0} 
+${color lightyellow}Total Received: ${color lightblue}${totaldown wlp4s0}${color lightblue}
+
+${color lightyellow}$hr${font Bauhaus:size=11}
+Home: ${color lightblue}${fs_used /}/${fs_size /}${alignr}${fs_bar 7,90 /}
+            ${color green}${fs_free /} wolne${color lightyellow}
+Dane: ${color lightblue}${fs_used /home/pawelw/dane}/${fs_size /home/pawelw/dane}${alignr}${fs_bar 7,90 /home/pawelw/dane}
+            ${color green}${fs_free /home/pawelw/dane} wolne${color lightyellow}
+
+${color lightyellow}Procesy ${color lightyellow}${alignr}CPU%
+${color lightblue}${top name 1}${alignr}${top cpu 1}
+${color lightblue}${top name 2}${alignr}${top cpu 2}
+${color lightblue}${top name 3}${alignr}${top cpu 3}
+${color lightblue}${top name 4}${alignr}${top cpu 4}
+${color lightblue}${top name 5}${alignr}${top cpu 5}
+${color lightblue}${top name 6}${alignr}${top cpu 6}
+ 
